@@ -24,6 +24,7 @@ export const getACoupon = async couponID => {
 export const useACounpon = async couponID => {
   if (!couponID) throw new Error('couponID is required')
   try {
+    //get a coupon
     const response = await fetch(
       `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Table%201?filterByFormula=Coupon="${couponID}"`,
       {
@@ -34,9 +35,12 @@ export const useACounpon = async couponID => {
       },
     )
     const data = await response.json()
-    //if the record is not exist
+    //if the record does not exist
     if (!data.records[0].id)
       return { status: 200, data: { message: 'Invalid coupon' } }
+
+    //if the coupon expired || USED
+    if(data.records[0].fields.Expired==='TRUE' || data.records[0].fields.Status==='USED') return { status: 200, data: { message: 'Invalid coupon' } }
 
     const recordID = await data.records[0].id
     //if found record use Patch request to update the field

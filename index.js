@@ -9,9 +9,17 @@ addEventListener('fetch', event => {
  */
 async function handleRequest(request) {
   const url = request.url
+  const method = request.method
+  //xxxxxx/?couponID=cccc
   const couponID = url.substring(url.indexOf('=') + 1)
   // const data = await updateACoupon('BBBBB')
-  const data = await useACounpon(couponID)
+  let data
+  if (method === 'GET') {
+    data = await getACoupon(couponID)
+  }
+  if (method === 'PATCH') {
+    data = await useACounpon(couponID)
+  }
   return new Response(JSON.stringify(data), {
     headers: { 'content-type': 'text/plain' },
   })

@@ -1,3 +1,5 @@
+#An serverless that check and update snappic coupon
+
 # 👷 `worker-template` Hello World
 
 A template for kick starting a Cloudflare worker project.
